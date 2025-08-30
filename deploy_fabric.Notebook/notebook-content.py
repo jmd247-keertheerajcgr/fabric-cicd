@@ -14,11 +14,13 @@
 # Welcome to your new notebook
 # Type here in the cell editor to add code!
 from fabric_cicd import FabricWorkspace, publish_all_items, unpublish_all_orphan_items
+import os
 
 # Initialize the FabricWorkspace object with the required parameters
 target_workspace = FabricWorkspace(
     workspace_id = "d1ecda06-105b-4dcb-9af8-d14c17383377",
-    repository_directory = "C:/Users/KeertheerajCGR/Downloads/fabric-cicd/fabric-cicd",
+    # repository_directory = "C:/Users/KeertheerajCGR/Downloads/fabric-cicd/fabric-cicd",
+    repository_directory = os.getcwd()
     item_type_in_scope = ["Notebook","DataPipeline","Environment"],
 )
 
