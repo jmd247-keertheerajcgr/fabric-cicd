@@ -1,0 +1,32 @@
+name: Branch-based deploys
+on:
+  push:
+    branches: ["*", "!refs/tags/*"]
+  release:
+    types: [published]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context (debug)
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Print refs (debug)
+        run: |
+          echo "event: $GITHUB_EVENT_NAME"
+          echo "ref: $GITHUB_REF"
+          echo "ref_name: $GITHUB_REF_NAME"
+          echo "head_ref (PR only): ${{ github.head_ref }}"
+      - name: Dev branch step
+        if: github.ref == 'refs/heads/dev'
+        run: echo "Deploying DEV"
+      - name: Release branch step
+        if: github.ref == 'refs/heads/release'
+        run: echo "Deploying QA"
+      - name: Master branch step
+        if: github.ref == 'refs/heads/master'
+        run: echo "Deploying STAGE"
+      - name: On published release
+        if: github.event_name == 'release'
+        run: echo "Deploying PRODUCTION"
